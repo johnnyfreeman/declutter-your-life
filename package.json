@@ -15,7 +15,7 @@
     "react-dom": "^0.14.3"
   },
   "scripts": {
-    "build:js": "browserify -e src/js/main.js -t [ babelify --presets react es2015 ] > main.js",
+    "build:js": "browserify -e src/js/main.js -t [ babelify --presets [ react es2015 ] ] > main.js",
     "build": "npm run build:js"
   }
 }
