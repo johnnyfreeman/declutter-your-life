@@ -1,3 +1,4 @@
+import ArrayItem from "./array-item";
 import React from "react";
 
 export default React.createClass({
@@ -103,39 +104,45 @@ export default React.createClass({
 				<thead>
 						<tr>
 						<td></td>
-						{this.state.importantThings.map((importantThing, i) => {
-								return <th>{importantThing.text} (x{importantThing.multiplier})</th>;
+						{this.state.importantThings.map((importantThing, it) => {
+								return <ArrayItem key={it}>
+									<th>{importantThing.text} (x{importantThing.multiplier})</th>
+								</ArrayItem>;
 						})}
 					</tr>
 				</thead>
 				<tbody>
-					{this.state.attentionGetters.map((attentionGetter) => {
-						return <tr>
-							<th>{attentionGetter.text}</th>
-							{this.state.importantThings.map((importantThing) => {
-								return <td>
-									<select onChange={this.updateTotal}>
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
-										<option>4</option>
-										<option>5</option>
-										<option>6</option>
-										<option>7</option>
-										<option>8</option>
-										<option>9</option>
-										<option>10</option>
-									</select>
-								</td>;
-							})}
-							<td>
-								<input 
-									className="total"
-									ref={attentionGetter.text+'-total'}
-									type="text"
-									/>
-							</td>
-						</tr>;
+					{this.state.attentionGetters.map((attentionGetter, ag) => {
+						return <ArrayItem key={ag}>
+							<tr>
+								<th>{attentionGetter.text}</th>
+								{this.state.importantThings.map((importantThing, it) => {
+									return <ArrayItem key={it}>
+										<td>
+											<select onChange={this.updateTotal}>
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+												<option>6</option>
+												<option>7</option>
+												<option>8</option>
+												<option>9</option>
+												<option>10</option>
+											</select>
+										</td>
+									</ArrayItem>;
+								})}
+								<td>
+									<input 
+										className="total"
+										ref={attentionGetter.text+'-total'}
+										type="text"
+										/>
+								</td>
+							</tr>
+						</ArrayItem>;
 					})}
 				</tbody>
 			</table>

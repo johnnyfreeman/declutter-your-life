@@ -19017,20 +19017,24 @@ module.exports = validateDOMNesting;
 module.exports = require('./lib/React');
 
 },{"./lib/React":53}],159:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
-var _react = require('react');
+var _arrayItem = require("./array-item");
+
+var _arrayItem2 = _interopRequireDefault(_arrayItem);
+
+var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createClass({
-	displayName: 'app',
+	displayName: "app",
 	getInitialState: function getInitialState() {
 		return {
 			// input values
@@ -19089,163 +19093,175 @@ exports.default = _react2.default.createClass({
 		var _this = this;
 
 		return _react2.default.createElement(
-			'div',
+			"div",
 			null,
 			_react2.default.createElement(
-				'p',
+				"p",
 				null,
 				_react2.default.createElement(
-					'label',
+					"label",
 					null,
-					'What has your attention? ',
-					_react2.default.createElement('br', null),
-					_react2.default.createElement('input', {
-						name: 'attentionInput',
+					"What has your attention? ",
+					_react2.default.createElement("br", null),
+					_react2.default.createElement("input", {
+						name: "attentionInput",
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
-						placeholder: 'Writing, Coding, etc.',
-						type: 'text',
+						placeholder: "Writing, Coding, etc.",
+						type: "text",
 						value: this.state.attentionInput
 					}),
 					_react2.default.createElement(
-						'button',
+						"button",
 						{ onClick: this.addAttentionGetter },
-						'Add'
+						"Add"
 					)
 				)
 			),
 			_react2.default.createElement(
-				'p',
+				"p",
 				null,
 				_react2.default.createElement(
-					'label',
+					"label",
 					null,
-					'What is an important thing in your life? ',
-					_react2.default.createElement('br', null),
-					_react2.default.createElement('input', {
-						name: 'importantInput',
+					"What is an important thing in your life? ",
+					_react2.default.createElement("br", null),
+					_react2.default.createElement("input", {
+						name: "importantInput",
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
-						placeholder: 'Money, Passion, etc.',
-						type: 'text',
+						placeholder: "Money, Passion, etc.",
+						type: "text",
 						value: this.state.importantInput
 					}),
-					_react2.default.createElement('input', {
-						name: 'multiplierInput',
+					_react2.default.createElement("input", {
+						name: "multiplierInput",
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
-						type: 'number',
+						type: "number",
 						value: this.state.multiplierInput
 					}),
 					_react2.default.createElement(
-						'button',
+						"button",
 						{ onClick: this.addImportantThing },
-						'Add'
+						"Add"
 					)
 				)
 			),
 			_react2.default.createElement(
-				'table',
-				{ cellSpacing: '0', cellPadding: '0' },
+				"table",
+				{ cellSpacing: "0", cellPadding: "0" },
 				_react2.default.createElement(
-					'thead',
+					"thead",
 					null,
 					_react2.default.createElement(
-						'tr',
+						"tr",
 						null,
-						_react2.default.createElement('td', null),
-						this.state.importantThings.map(function (importantThing, i) {
+						_react2.default.createElement("td", null),
+						this.state.importantThings.map(function (importantThing, it) {
 							return _react2.default.createElement(
-								'th',
-								null,
-								importantThing.text,
-								' (x',
-								importantThing.multiplier,
-								')'
+								_arrayItem2.default,
+								{ key: it },
+								_react2.default.createElement(
+									"th",
+									null,
+									importantThing.text,
+									" (x",
+									importantThing.multiplier,
+									")"
+								)
 							);
 						})
 					)
 				),
 				_react2.default.createElement(
-					'tbody',
+					"tbody",
 					null,
-					this.state.attentionGetters.map(function (attentionGetter) {
+					this.state.attentionGetters.map(function (attentionGetter, ag) {
 						return _react2.default.createElement(
-							'tr',
-							null,
+							_arrayItem2.default,
+							{ key: ag },
 							_react2.default.createElement(
-								'th',
+								"tr",
 								null,
-								attentionGetter.text
-							),
-							_this.state.importantThings.map(function (importantThing) {
-								return _react2.default.createElement(
-									'td',
+								_react2.default.createElement(
+									"th",
 									null,
-									_react2.default.createElement(
-										'select',
-										{ onChange: _this.updateTotal },
+									attentionGetter.text
+								),
+								_this.state.importantThings.map(function (importantThing, it) {
+									return _react2.default.createElement(
+										_arrayItem2.default,
+										{ key: it },
 										_react2.default.createElement(
-											'option',
+											"td",
 											null,
-											'1'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'2'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'3'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'4'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'5'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'6'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'7'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'8'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'9'
-										),
-										_react2.default.createElement(
-											'option',
-											null,
-											'10'
+											_react2.default.createElement(
+												"select",
+												{ onChange: _this.updateTotal },
+												_react2.default.createElement(
+													"option",
+													null,
+													"1"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"2"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"3"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"4"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"5"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"6"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"7"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"8"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"9"
+												),
+												_react2.default.createElement(
+													"option",
+													null,
+													"10"
+												)
+											)
 										)
-									)
-								);
-							}),
-							_react2.default.createElement(
-								'td',
-								null,
-								_react2.default.createElement('input', {
-									className: 'total',
-									ref: attentionGetter.text + '-total',
-									type: 'text'
-								})
+									);
+								}),
+								_react2.default.createElement(
+									"td",
+									null,
+									_react2.default.createElement("input", {
+										className: "total",
+										ref: attentionGetter.text + '-total',
+										type: "text"
+									})
+								)
 							)
 						);
 					})
@@ -19255,7 +19271,27 @@ exports.default = _react2.default.createClass({
 	}
 });
 
-},{"react":158}],160:[function(require,module,exports){
+},{"./array-item":160,"react":158}],160:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = require("react");
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _react2.default.createClass({
+    displayName: "array-item",
+    render: function render() {
+        return this.props.children;
+    }
+});
+
+},{"react":158}],161:[function(require,module,exports){
 "use strict";
 
 var _app = require("./app");
@@ -19274,4 +19310,4 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.getElementById('app'));
 
-},{"./app":159,"react":158,"react-dom":29}]},{},[160]);
+},{"./app":159,"react":158,"react-dom":29}]},{},[161]);
