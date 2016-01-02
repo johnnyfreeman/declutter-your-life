@@ -1,8 +1,6 @@
-var React = require('react');
+import React from "react";
 
-// import React from "react";
-
-var App = React.createClass({
+export default React.createClass({
 	getInitialState() {
 		return {
 			// input values
@@ -105,7 +103,7 @@ var App = React.createClass({
 				<thead>
 						<tr>
 						<td></td>
-						{this.state.importantThings.map((importantThing) => {
+						{this.state.importantThings.map((importantThing, i) => {
 								return <th>{importantThing.text} (x{importantThing.multiplier})</th>;
 						})}
 					</tr>
@@ -144,5 +142,3 @@ var App = React.createClass({
 		</div>;
 	}
 });
-
-module.exports = App;

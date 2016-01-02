@@ -19019,12 +19019,18 @@ module.exports = require('./lib/React');
 },{"./lib/React":53}],159:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
 
-// import React from "react";
+var _react = require('react');
 
-var App = React.createClass({
-	displayName: 'App',
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _react2.default.createClass({
+	displayName: 'app',
 	getInitialState: function getInitialState() {
 		return {
 			// input values
@@ -19082,18 +19088,18 @@ var App = React.createClass({
 	render: function render() {
 		var _this = this;
 
-		return React.createElement(
+		return _react2.default.createElement(
 			'div',
 			null,
-			React.createElement(
+			_react2.default.createElement(
 				'p',
 				null,
-				React.createElement(
+				_react2.default.createElement(
 					'label',
 					null,
 					'What has your attention? ',
-					React.createElement('br', null),
-					React.createElement('input', {
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('input', {
 						name: 'attentionInput',
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
@@ -19101,22 +19107,22 @@ var App = React.createClass({
 						type: 'text',
 						value: this.state.attentionInput
 					}),
-					React.createElement(
+					_react2.default.createElement(
 						'button',
 						{ onClick: this.addAttentionGetter },
 						'Add'
 					)
 				)
 			),
-			React.createElement(
+			_react2.default.createElement(
 				'p',
 				null,
-				React.createElement(
+				_react2.default.createElement(
 					'label',
 					null,
 					'What is an important thing in your life? ',
-					React.createElement('br', null),
-					React.createElement('input', {
+					_react2.default.createElement('br', null),
+					_react2.default.createElement('input', {
 						name: 'importantInput',
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
@@ -19124,32 +19130,32 @@ var App = React.createClass({
 						type: 'text',
 						value: this.state.importantInput
 					}),
-					React.createElement('input', {
+					_react2.default.createElement('input', {
 						name: 'multiplierInput',
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
 						type: 'number',
 						value: this.state.multiplierInput
 					}),
-					React.createElement(
+					_react2.default.createElement(
 						'button',
 						{ onClick: this.addImportantThing },
 						'Add'
 					)
 				)
 			),
-			React.createElement(
+			_react2.default.createElement(
 				'table',
 				{ cellSpacing: '0', cellPadding: '0' },
-				React.createElement(
+				_react2.default.createElement(
 					'thead',
 					null,
-					React.createElement(
+					_react2.default.createElement(
 						'tr',
 						null,
-						React.createElement('td', null),
-						this.state.importantThings.map(function (importantThing) {
-							return React.createElement(
+						_react2.default.createElement('td', null),
+						this.state.importantThings.map(function (importantThing, i) {
+							return _react2.default.createElement(
 								'th',
 								null,
 								importantThing.text,
@@ -19160,71 +19166,71 @@ var App = React.createClass({
 						})
 					)
 				),
-				React.createElement(
+				_react2.default.createElement(
 					'tbody',
 					null,
 					this.state.attentionGetters.map(function (attentionGetter) {
-						return React.createElement(
+						return _react2.default.createElement(
 							'tr',
 							null,
-							React.createElement(
+							_react2.default.createElement(
 								'th',
 								null,
 								attentionGetter.text
 							),
 							_this.state.importantThings.map(function (importantThing) {
-								return React.createElement(
+								return _react2.default.createElement(
 									'td',
 									null,
-									React.createElement(
+									_react2.default.createElement(
 										'select',
 										{ onChange: _this.updateTotal },
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'1'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'2'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'3'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'4'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'5'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'6'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'7'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'8'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'9'
 										),
-										React.createElement(
+										_react2.default.createElement(
 											'option',
 											null,
 											'10'
@@ -19232,10 +19238,10 @@ var App = React.createClass({
 									)
 								);
 							}),
-							React.createElement(
+							_react2.default.createElement(
 								'td',
 								null,
-								React.createElement('input', {
+								_react2.default.createElement('input', {
 									className: 'total',
 									ref: attentionGetter.text + '-total',
 									type: 'text'
@@ -19249,18 +19255,23 @@ var App = React.createClass({
 	}
 });
 
-module.exports = App;
-
 },{"react":158}],160:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var React = require('react');
-var ReactDOM = require('react-dom');
-var App = require('./app.js');
+var _app = require("./app");
 
-// import App from "./app";
-// import ReactDOM from "react";
+var _app2 = _interopRequireDefault(_app);
 
-ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
+var _react = require("react");
 
-},{"./app.js":159,"react":158,"react-dom":29}]},{},[160]);
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = require("react-dom");
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_reactDom2.default.render(_react2.default.createElement(_app2.default, null), document.getElementById('app'));
+
+},{"./app":159,"react":158,"react-dom":29}]},{},[160]);
