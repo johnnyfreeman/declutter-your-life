@@ -19033,6 +19033,9 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// simple unique Id for data
+var nextId = 0;
+
 exports.default = _react2.default.createClass({
 	displayName: "app",
 	getInitialState: function getInitialState() {
@@ -19040,36 +19043,63 @@ exports.default = _react2.default.createClass({
 			// input values
 			attentionInput: '',
 			importantInput: '',
-			multiplierInput: '1',
+			weightInput: '1',
 
 			// data
-			attentionGetters: [],
-			importantThings: []
+			yLabels: {}, // attention getters
+			xLabels: {}, // important things
+			scores: {} // many-to-many x-y scores
 		};
 	},
-	addAttentionGetter: function addAttentionGetter(e) {
-		var attentionGetters = this.state.attentionGetters;
-		attentionGetters.push({
-			text: this.state.attentionInput,
-			values: []
+	addYLabel: function addYLabel() {
+		var yId = nextId;
+		nextId += 1;
+		// add label
+		var yLabels = Object.assign({}, this.state.yLabels);
+		yLabels[yId] = {
+			id: yId,
+			text: this.state.attentionInput
+		};
+
+		// clear input
+		var attentionInput = '';
+
+		// add scores
+		var scores = Object.assign({}, this.state.scores);
+		Object.keys(this.state.xLabels).forEach(function (xId) {
+			var scoreId = xId + '-' + yId;
+			var value = 1; // default
+			scores[scoreId] = { xId: xId, yId: yId, value: value };
 		});
-		this.setState({
-			attentionGetters: attentionGetters,
-			attentionInput: ''
-		});
+
+		// update internal state
+		this.setState({ yLabels: yLabels, attentionInput: attentionInput, scores: scores });
 	},
-	addImportantThing: function addImportantThing(e) {
-		var importantThings = this.state.importantThings;
+	addXLabel: function addXLabel() {
+		var xId = nextId;
+		nextId += 1;
+		// add label
+		var xLabels = Object.assign({}, this.state.xLabels);
+		xLabels[xId] = {
+			id: xId,
+			text: this.state.importantInput,
+			weight: this.state.weightInput
+		};
 
-		importantThings.push({
-			multiplier: this.state.multiplierInput,
-			text: this.state.importantInput
+		// clear inputs
+		var importantInput = '';
+		var weightInput = '1';
+
+		// add scores
+		var scores = Object.assign({}, this.state.scores);
+		Object.keys(this.state.yLabels).forEach(function (yId) {
+			var scoreId = xId + '-' + yId;
+			var value = 1; // default
+			scores[scoreId] = { yId: yId, yId: yId, value: value };
 		});
 
-		this.setState({
-			importantThings: importantThings,
-			importantInput: ''
-		});
+		// update internal state
+		this.setState({ xLabels: xLabels, importantInput: importantInput, weightInput: weightInput, scores: scores });
 	},
 	updateInput: function updateInput(e) {
 		var state = {};
@@ -19080,17 +19110,40 @@ exports.default = _react2.default.createClass({
 		if (e.which === 13) {
 			e.preventDefault();
 			var name = e.target.name;
-			var value = e.target.value;
+
+			if (name === 'attentionInput') {
+				this.addYLabel();
+				this.refs.attentionInput.focus();
+			} else if (name === 'importantInput' || name === 'weightInput') {
+				this.addXLabel();
+				this.refs.importantInput.focus();
+			}
 		}
 	},
-	updateValue: function updateValue(e) {
-		var name = e.target.name;
-		var importantThing = name.slice(0, name.indexOf('['));
-		console.log(importantThing);
+	updateScore: function updateScore(e) {
+		var scoreId = e.target.name;
+		var value = e.target.value;
+
+		var scores = this.state.scores;
+		scores[scoreId] = Object.assign({}, scores[e.target.name], { value: value });
+		this.setState({ scores: scores });
+	},
+	getYSum: function getYSum(yId) {
+		var _this = this;
+
+		var sum = 0;
+
+		Object.keys(this.state.xLabels).forEach(function (xId) {
+			var xLabel = _this.state.xLabels[xId];
+			var score = _this.state.scores[xId + '-' + yId];
+			sum += xLabel.weight * score.value;
+		});
+
+		return sum;
 	},
 
 	render: function render() {
-		var _this = this;
+		var _this2 = this;
 
 		return _react2.default.createElement(
 			"div",
@@ -19108,6 +19161,7 @@ exports.default = _react2.default.createClass({
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
 						placeholder: "Writing, Coding, etc.",
+						ref: "attentionInput",
 						type: "text",
 						value: this.state.attentionInput
 					}),
@@ -19132,14 +19186,15 @@ exports.default = _react2.default.createClass({
 						onKeyDown: this.handleEnter,
 						placeholder: "Money, Passion, etc.",
 						type: "text",
-						value: this.state.importantInput
+						value: this.state.importantInput,
+						ref: "importantInput"
 					}),
 					_react2.default.createElement("input", {
-						name: "multiplierInput",
+						name: "weightInput",
 						onChange: this.updateInput,
 						onKeyDown: this.handleEnter,
 						type: "number",
-						value: this.state.multiplierInput
+						value: this.state.weightInput
 					}),
 					_react2.default.createElement(
 						"button",
@@ -19158,16 +19213,17 @@ exports.default = _react2.default.createClass({
 						"tr",
 						null,
 						_react2.default.createElement("td", null),
-						this.state.importantThings.map(function (importantThing, it) {
+						Object.keys(this.state.xLabels).map(function (xId) {
+							var xLabel = _this2.state.xLabels[xId];
 							return _react2.default.createElement(
 								_arrayItem2.default,
-								{ key: it },
+								{ key: xId },
 								_react2.default.createElement(
 									"th",
 									null,
-									importantThing.text,
+									xLabel.text,
 									" (x",
-									importantThing.multiplier,
+									xLabel.weight,
 									")"
 								)
 							);
@@ -19177,28 +19233,31 @@ exports.default = _react2.default.createClass({
 				_react2.default.createElement(
 					"tbody",
 					null,
-					this.state.attentionGetters.map(function (attentionGetter, ag) {
+					Object.keys(this.state.yLabels).map(function (yId) {
+						var yLabel = _this2.state.yLabels[yId];
 						return _react2.default.createElement(
 							_arrayItem2.default,
-							{ key: ag },
+							{ key: yId },
 							_react2.default.createElement(
 								"tr",
 								null,
 								_react2.default.createElement(
 									"th",
 									null,
-									attentionGetter.text
+									yLabel.text
 								),
-								_this.state.importantThings.map(function (importantThing, it) {
+								Object.keys(_this2.state.xLabels).map(function (xId) {
 									return _react2.default.createElement(
 										_arrayItem2.default,
-										{ key: it },
+										{ key: xId },
 										_react2.default.createElement(
 											"td",
 											null,
 											_react2.default.createElement(
 												"select",
-												{ onChange: _this.updateTotal },
+												{
+													name: xId + '-' + yId,
+													onChange: _this2.updateScore },
 												_react2.default.createElement(
 													"option",
 													null,
@@ -19257,9 +19316,10 @@ exports.default = _react2.default.createClass({
 									"td",
 									null,
 									_react2.default.createElement("input", {
-										className: "total",
-										ref: attentionGetter.text + '-total',
-										type: "text"
+										className: "ySum",
+										type: "text",
+										readOnly: true,
+										value: _this2.getYSum(yId)
 									})
 								)
 							)
