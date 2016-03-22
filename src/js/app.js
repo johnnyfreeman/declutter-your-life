@@ -20,53 +20,65 @@ export default React.createClass({
 		}
 	},
 
+	prepareLabels(input) {
+		let labels;
+		if (input.indexOf(',') > -1) {
+			labels = input.split(',');
+		} else {
+			labels = [ input ];
+		}
+
+		// trim all labels
+		return labels.map(Function.prototype.call, String.prototype.trim);
+	},
+
+	// add attention getter(s)
 	addYLabel() {
-		let yId = nextId;
-		nextId += 1;
-		// add label
-		let yLabels = Object.assign({}, this.state.yLabels);
-		yLabels[yId] = {
-			id: yId,
-			text: this.state.attentionInput
-		};
-
-		// clear input
 		let attentionInput = '';
-
-		// add scores
 		let scores = Object.assign({}, this.state.scores);
-		Object.keys(this.state.xLabels).forEach((xId) => {
-			let scoreId = xId + '-' + yId;
-			let value = 1; // default
-			scores[scoreId] = { xId, yId, value };
+		let yLabels = Object.assign({}, this.state.yLabels);
+
+		// add label(s) and scores
+		this.prepareLabels(this.state.attentionInput).forEach((text) => {
+			let yId = nextId;
+			nextId += 1;
+
+			// add label(s)
+			yLabels[yId] = { id: yId, text };
+
+			// add scores
+			Object.keys(this.state.xLabels).forEach((xId) => {
+				let scoreId = xId + '-' + yId;
+				let value = 1; // default
+				scores[scoreId] = { xId, yId, value };
+			});
 		});
 
 		// update internal state
 		this.setState({ yLabels, attentionInput, scores });
 	},
 
+	// add important thing(s)
 	addXLabel() {
-		let xId = nextId;
-		nextId += 1;
-		// add label
-		let xLabels = Object.assign({}, this.state.xLabels);
-		xLabels[xId] = {
-			id: xId,
-			text: this.state.importantInput,
-			weight: this.state.weightInput
-		};
-
-		// clear inputs
 		let importantInput = '';
-		let weightInput = '1';
-
-		// add scores
 		let scores = Object.assign({}, this.state.scores);
-		Object.keys(this.state.yLabels).forEach((yId) => {
-			let scoreId = xId + '-' + yId;
-			let value = 1; // default
-			scores[scoreId] = { yId, yId, value };
-		});
+		let weightInput = '1';
+		let xLabels = Object.assign({}, this.state.xLabels);
+
+		this.prepareLabels(this.state.importantInput).forEach((text) => {
+			let xId = nextId;
+			nextId += 1;
+
+			// add label(s)
+			xLabels[xId] = { id: xId, text, weight: this.state.weightInput };
+
+			// add scores
+			Object.keys(this.state.yLabels).forEach((yId) => {
+				let scoreId = xId + '-' + yId;
+				let value = 1; // default
+				scores[scoreId] = { yId, yId, value };
+			});
+		})
 
 		// update internal state
 		this.setState({ xLabels, importantInput, weightInput, scores });

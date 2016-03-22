@@ -19051,51 +19051,68 @@ exports.default = _react2.default.createClass({
 			scores: {} // many-to-many x-y scores
 		};
 	},
+	prepareLabels: function prepareLabels(input) {
+		var labels = undefined;
+		if (input.indexOf(',') > -1) {
+			labels = input.split(',');
+		} else {
+			labels = [input];
+		}
+
+		// trim all labels
+		return labels.map(Function.prototype.call, String.prototype.trim);
+	},
+
+	// add attention getter(s)
 	addYLabel: function addYLabel() {
-		var yId = nextId;
-		nextId += 1;
-		// add label
-		var yLabels = Object.assign({}, this.state.yLabels);
-		yLabels[yId] = {
-			id: yId,
-			text: this.state.attentionInput
-		};
+		var _this = this;
 
-		// clear input
 		var attentionInput = '';
-
-		// add scores
 		var scores = Object.assign({}, this.state.scores);
-		Object.keys(this.state.xLabels).forEach(function (xId) {
-			var scoreId = xId + '-' + yId;
-			var value = 1; // default
-			scores[scoreId] = { xId: xId, yId: yId, value: value };
+		var yLabels = Object.assign({}, this.state.yLabels);
+
+		// add label(s) and scores
+		this.prepareLabels(this.state.attentionInput).forEach(function (text) {
+			var yId = nextId;
+			nextId += 1;
+
+			// add label(s)
+			yLabels[yId] = { id: yId, text: text };
+
+			// add scores
+			Object.keys(_this.state.xLabels).forEach(function (xId) {
+				var scoreId = xId + '-' + yId;
+				var value = 1; // default
+				scores[scoreId] = { xId: xId, yId: yId, value: value };
+			});
 		});
 
 		// update internal state
 		this.setState({ yLabels: yLabels, attentionInput: attentionInput, scores: scores });
 	},
+
+	// add important thing(s)
 	addXLabel: function addXLabel() {
-		var xId = nextId;
-		nextId += 1;
-		// add label
-		var xLabels = Object.assign({}, this.state.xLabels);
-		xLabels[xId] = {
-			id: xId,
-			text: this.state.importantInput,
-			weight: this.state.weightInput
-		};
+		var _this2 = this;
 
-		// clear inputs
 		var importantInput = '';
-		var weightInput = '1';
-
-		// add scores
 		var scores = Object.assign({}, this.state.scores);
-		Object.keys(this.state.yLabels).forEach(function (yId) {
-			var scoreId = xId + '-' + yId;
-			var value = 1; // default
-			scores[scoreId] = { yId: yId, yId: yId, value: value };
+		var weightInput = '1';
+		var xLabels = Object.assign({}, this.state.xLabels);
+
+		this.prepareLabels(this.state.importantInput).forEach(function (text) {
+			var xId = nextId;
+			nextId += 1;
+
+			// add label(s)
+			xLabels[xId] = { id: xId, text: text, weight: _this2.state.weightInput };
+
+			// add scores
+			Object.keys(_this2.state.yLabels).forEach(function (yId) {
+				var scoreId = xId + '-' + yId;
+				var value = 1; // default
+				scores[scoreId] = { yId: yId, yId: yId, value: value };
+			});
 		});
 
 		// update internal state
@@ -19129,13 +19146,13 @@ exports.default = _react2.default.createClass({
 		this.setState({ scores: scores });
 	},
 	getYSum: function getYSum(yId) {
-		var _this = this;
+		var _this3 = this;
 
 		var sum = 0;
 
 		Object.keys(this.state.xLabels).forEach(function (xId) {
-			var xLabel = _this.state.xLabels[xId];
-			var score = _this.state.scores[xId + '-' + yId];
+			var xLabel = _this3.state.xLabels[xId];
+			var score = _this3.state.scores[xId + '-' + yId];
 			sum += xLabel.weight * score.value;
 		});
 
@@ -19143,7 +19160,7 @@ exports.default = _react2.default.createClass({
 	},
 
 	render: function render() {
-		var _this2 = this;
+		var _this4 = this;
 
 		return _react2.default.createElement(
 			"div",
@@ -19214,7 +19231,7 @@ exports.default = _react2.default.createClass({
 						null,
 						_react2.default.createElement("td", null),
 						Object.keys(this.state.xLabels).map(function (xId) {
-							var xLabel = _this2.state.xLabels[xId];
+							var xLabel = _this4.state.xLabels[xId];
 							return _react2.default.createElement(
 								_arrayItem2.default,
 								{ key: xId },
@@ -19234,7 +19251,7 @@ exports.default = _react2.default.createClass({
 					"tbody",
 					null,
 					Object.keys(this.state.yLabels).map(function (yId) {
-						var yLabel = _this2.state.yLabels[yId];
+						var yLabel = _this4.state.yLabels[yId];
 						return _react2.default.createElement(
 							_arrayItem2.default,
 							{ key: yId },
@@ -19246,7 +19263,7 @@ exports.default = _react2.default.createClass({
 									null,
 									yLabel.text
 								),
-								Object.keys(_this2.state.xLabels).map(function (xId) {
+								Object.keys(_this4.state.xLabels).map(function (xId) {
 									return _react2.default.createElement(
 										_arrayItem2.default,
 										{ key: xId },
@@ -19257,7 +19274,7 @@ exports.default = _react2.default.createClass({
 												"select",
 												{
 													name: xId + '-' + yId,
-													onChange: _this2.updateScore },
+													onChange: _this4.updateScore },
 												_react2.default.createElement(
 													"option",
 													null,
@@ -19319,7 +19336,7 @@ exports.default = _react2.default.createClass({
 										className: "ySum",
 										type: "text",
 										readOnly: true,
-										value: _this2.getYSum(yId)
+										value: _this4.getYSum(yId)
 									})
 								)
 							)
