@@ -19167,7 +19167,7 @@ exports.default = _react2.default.createClass({
 					}),
 					_react2.default.createElement(
 						"button",
-						{ onClick: this.addAttentionGetter },
+						{ onClick: this.addYLabel },
 						"Add"
 					)
 				)
@@ -19198,7 +19198,7 @@ exports.default = _react2.default.createClass({
 					}),
 					_react2.default.createElement(
 						"button",
-						{ onClick: this.addImportantThing },
+						{ onClick: this.addXLabel },
 						"Add"
 					)
 				)

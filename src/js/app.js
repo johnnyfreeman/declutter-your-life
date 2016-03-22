@@ -128,7 +128,7 @@ export default React.createClass({
 						type="text" 
 						value={this.state.attentionInput}
 						/>
-					<button onClick={this.addAttentionGetter}>Add</button>
+					<button onClick={this.addYLabel}>Add</button>
 				</label>
 			</p>
 
@@ -151,7 +151,7 @@ export default React.createClass({
 						type="number"
 						value={this.state.weightInput}
 						/>
-					<button onClick={this.addImportantThing}>Add</button>
+					<button onClick={this.addXLabel}>Add</button>
 				</label>
 			</p>
 			
